@@ -14,6 +14,7 @@
 #watch .teaching-list article a{display:grid;grid-template-columns:40px 1fr 20px;gap:15px;align-items:center;padding:25px 0}
 #watch a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 @media(max-width:850px){#watch .feature-grid{grid-template-areas:'video' 'caption' 'list'}}
+#watch .youtube-player{grid-area:video;display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;background:#111;scroll-margin-top:88px}
 </style>
 </head>
 <body>
@@ -29,19 +30,19 @@
   </div>
   <div class="feature-grid">
     <article class="feature-video">
-      <a class="media-placeholder" href="https://www.youtube.com/watch?v=ZoQdPeEOaUc" aria-label="Watch Guard Your Heart on YouTube">
+      <a class="media-placeholder" href="https://www.youtube.com/watch?v=ZoQdPeEOaUc" data-video="ZoQdPeEOaUc" data-title="Guard Your Heart" aria-label="Play Guard Your Heart">
         <span class="play" aria-hidden="true">▶</span><span class="stamp">FEATURED REPLAY</span>
       </a>
       <div class="feature-caption"><p class="meta">Livestream replay</p><h3>Guard Your Heart</h3></div>
     </article>
     <div class="teaching-list">
-      <article><a href="https://www.youtube.com/watch?v=2bsiOy3Ri94">
+      <article><a href="https://www.youtube.com/watch?v=2bsiOy3Ri94" data-video="2bsiOy3Ri94">
         <span>01</span><div><p class="meta">Livestream replay</p><h4>Live with Kelly K! · Nov 12, 2026</h4></div><b aria-hidden="true">→</b>
       </a></article>
-      <article><a href="https://www.youtube.com/watch?v=iifT_VaDaYc">
+      <article><a href="https://www.youtube.com/watch?v=iifT_VaDaYc" data-video="iifT_VaDaYc">
         <span>02</span><div><p class="meta">Livestream replay</p><h4>Live with Kelly K! · Nov 11, 2026</h4></div><b aria-hidden="true">→</b>
       </a></article>
-      <article><a href="https://www.youtube.com/watch?v=KjJVO6armKI">
+      <article><a href="https://www.youtube.com/watch?v=KjJVO6armKI" data-video="KjJVO6armKI">
         <span>03</span><div><p class="meta">Livestream replay</p><h4>Live with Kelly K! · Nov 10, 2026</h4></div><b aria-hidden="true">→</b>
       </a></article>
     </div>
@@ -57,4 +58,38 @@
 <div class="footer-ticker" aria-hidden="true"><div class="footer-ticker-track"><span class="ticker-copy">JESUS CHANGES EVERYTHING <b class="kkm-star">★</b> WATCH WHAT JESUS CAN DO THROUGH YOU <b class="kkm-star">★</b> MAKE JESUS KNOWN <b class="kkm-star">★</b> JESUS CHANGES EVERYTHING <b class="kkm-star">★</b> WATCH WHAT JESUS CAN DO THROUGH YOU <b class="kkm-star">★</b> MAKE JESUS KNOWN <b class="kkm-star">★</b>&nbsp;</span><span class="ticker-copy">JESUS CHANGES EVERYTHING <b class="kkm-star">★</b> WATCH WHAT JESUS CAN DO THROUGH YOU <b class="kkm-star">★</b> MAKE JESUS KNOWN <b class="kkm-star">★</b> JESUS CHANGES EVERYTHING <b class="kkm-star">★</b> WATCH WHAT JESUS CAN DO THROUGH YOU <b class="kkm-star">★</b> MAKE JESUS KNOWN <b class="kkm-star">★</b>&nbsp;</span></div></div>
 <footer><div class="footer-brand"><img src="Logo%20for%20dark%20background.png" alt="Kelly K Ministries"></div><div class="footer-links"><div><b>Explore</b><a href="#watch">Watch</a><a href="#mission">About</a><a href="#ignited">Events</a></div><div><b>Shop</b><a href="#shop">New releases</a><a href="#shop">Apparel</a><a href="#shop">Books + journals</a></div><div><b>Ministry</b><a href="#book">Book Kelly</a><a href="#support">Support</a><a href="#join">Join the list</a></div></div><small>V1 CONCEPT / KELLY K MINISTRIES</small></footer>
 <script src="script.js"></script>
+<script>
+{
+  const watchSection = document.querySelector('#watch');
+  const featured = watchSection.querySelector('.media-placeholder');
+  const caption = watchSection.querySelector('.feature-caption h3');
+  let player;
+
+  watchSection.addEventListener('click', event => {
+    const selection = event.target.closest('a[data-video]');
+    if (!selection || event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+
+    const title = selection.dataset.title ?? selection.querySelector('h4').textContent;
+    const video = selection.dataset.video;
+    if (!player) {
+      player = document.createElement('iframe');
+      player.className = 'youtube-player';
+      player.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      player.allowFullscreen = true;
+      player.referrerPolicy = 'strict-origin-when-cross-origin';
+    }
+
+    player.title = title + ' — YouTube video player';
+    if (player.dataset.video !== video) {
+      player.dataset.video = video;
+      player.src = 'https://www.youtube.com/embed/' + video + '?autoplay=1&playsinline=1&rel=0';
+    }
+    if (!player.isConnected) featured.replaceWith(player);
+    caption.textContent = title;
+    player.scrollIntoView({ block: 'nearest' });
+    player.focus({ preventScroll: true });
+  });
+}
+</script>
 </body></html>
