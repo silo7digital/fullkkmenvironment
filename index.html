@@ -15,6 +15,10 @@
 #watch a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
 @media(max-width:850px){#watch .feature-grid{grid-template-areas:'video' 'caption' 'list'}}
 #watch .youtube-player{grid-area:video;display:block;width:100%;aspect-ratio:16/9;min-height:200px;border:0;background:#111;scroll-margin-top:88px}
+#watch .feature-video .media-placeholder::before{content:none}
+#watch .featured-thumbnail{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#watch .feature-caption h3,#watch .teaching-list h4{font-family:Inter,Arial,sans-serif!important;line-height:1.15}
+#watch .feature-video .play{background:rgba(0,0,0,.65);color:#fff}
 </style>
 </head>
 <body>
@@ -31,6 +35,7 @@
   <div class="feature-grid">
     <article class="feature-video">
       <a class="media-placeholder" href="https://www.youtube.com/watch?v=ZoQdPeEOaUc" data-video="ZoQdPeEOaUc" data-title="Guard Your Heart" aria-label="Play Guard Your Heart">
+        <img class="featured-thumbnail" src="https://i.ytimg.com/vi/ZoQdPeEOaUc/maxresdefault.jpg" alt="" width="1280" height="720">
         <span class="play" aria-hidden="true">▶</span><span class="stamp">FEATURED REPLAY</span>
       </a>
       <div class="feature-caption"><p class="meta">Livestream replay</p><h3>Guard Your Heart</h3></div>
